@@ -73,13 +73,15 @@ then
     LOCAL_ENV=$CROSS_ROOT
 fi
 
+source $LOCAL_ENV/.env
+
 TAGS="binary,go_json"
 
 # This will run with local go using libtorrent-go/local-env/ locally copied dependencies compilation.
 export LOCAL_ENV=$LOCAL_ENV
 export PATH=$PATH:$LOCAL_ENV/bin/
 export PKG_CONFIG_PATH=$LOCAL_ENV/lib/pkgconfig
-export SWIG_LIB=$LOCAL_ENV/share/swig/4.1.1/
+export SWIG_LIB=$LOCAL_ENV/share/swig/${SWIG_TAG}/
 
 if [ "${DEST_ACTION}" == "local" ]
 then
