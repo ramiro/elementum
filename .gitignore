@@ -24,6 +24,10 @@ _cgo_export.*
 
 _testmain.go
 
+# Local environment setup
+go.work*
+
+# Debugging files
 elementum
 *.test
 /debug

@@ -1,12 +1,10 @@
 module github.com/elgatito/elementum
 
-go 1.21
-
-toolchain go1.21.1
+go 1.26.0
 
 require (
 	github.com/ElementumOrg/go-nat-pmp v0.0.0-20250224152958-33a79384df6a
-	github.com/ElementumOrg/libtorrent-go v0.0.0-20230915150218-d8763f5e1783
+	github.com/ElementumOrg/libtorrent-go v0.0.0-20260808180116-3ed1a24f1a3b
 	github.com/RoaringBitmap/roaring v1.9.4
 	github.com/anacrolix/missinggo v1.3.0
 	github.com/anacrolix/missinggo/perf v1.0.0
@@ -91,6 +89,3 @@ require (
 	google.golang.org/protobuf v1.30.0 // indirect
 	lukechampine.com/uint128 v1.3.0 // indirect
 )
-
-// Temporary fix to add android fix for madvise error
-replace go.etcd.io/bbolt v1.3.10 => github.com/ElementumOrg/bbolt v1.3.10-beta

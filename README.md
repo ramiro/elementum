@@ -28,6 +28,27 @@ Or you can apply environment variables and compile in any other way:
   export SWIG_LIB=$LOCAL_ENV/share/swig/4.1.1/
 ```
 
+# Setting up Go workspace for using local environment for libtorrent-go
+
+By default Go will fetch `libtorrent-go` module from Github. 
+To use local version of `libtorrent-go` we can set up the Go workspace, by adding `go.work` file inside `elementum directory:
+
+```
+
+go 1.26.0
+
+use (
+	.
+	../libtorrent-go
+)
+
+// Enable for local development of libtorrent-go
+replace github.com/ElementumOrg/libtorrent-go v0.0.0 => ../libtorrent-go
+
+```
+
+That would expect `libtorrent-go` folder to be available at `../libtorrent-go`.
+That would be also used when running compilation with `test_build.sh`, but would not work with `Docker` runs, as it is forced to ignore Go workspaces.
 
 # How to run
 
