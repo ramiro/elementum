@@ -454,7 +454,7 @@ func (btp *Player) statusStrings(progress float64, status lt.TorrentStatus) (str
 	// Bitrate
 	if btp.t.IsPlaying && btp.p.VideoDuration > 0 {
 		bps := uint64(totalSize) / uint64(btp.p.VideoDuration)
-		line1 += fmt.Sprintf(" - LOCALIZE[30640] ~ %s (%.2f MBit)", humanize.Bytes(bps), float64(bps*8)/1000000)
+		line1 += fmt.Sprintf(" - LOCALIZE[30640] ~ %s/s (%.2f Mbit/s)", humanize.Bytes(bps), float64(bps*8)/1000000)
 	}
 
 	seeds, seedsTotal, peers, peersTotal := btp.t.GetConnections()
