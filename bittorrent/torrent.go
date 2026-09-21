@@ -871,6 +871,54 @@ func (t *Torrent) GetBufferProgress() float64 {
 	return t.BufferProgress
 }
 
+// GetMemoryStorageProgress returns progress of currently needed pieces for memory storage playback.
+func (t *Torrent) GetMemoryStorageProgress() float64 {
+	if t == nil || t.Closer.IsSet() || !t.IsMemoryStorage() {
+		return t.GetProgress()
+	}
+
+	defer perf.ScopeTimer()()
+
+	readerProgress := map[int]float64{}
+
+	t.muDemandPieces.RLock()
+	i := t.demandPieces.Iterator()
+	for i.HasNext() {
+		readerProgress[int(i.Next())] = 0
+	}
+	t.muDemandPieces.RUnlock()
+
+	t.muReaders.Lock()
+	for _, r := range t.readers {
+		pr := r.ReaderPiecesRange()
+		for curPiece := pr.Begin; curPiece <= pr.End; curPiece++ {
+			readerProgress[curPiece] = 0
+		}
+	}
+	t.muReaders.Unlock()
+
+	if len(readerProgress) == 0 {
+		return t.GetProgress()
+	}
+
+	t.piecesProgress(readerProgress)
+
+	totalProgress := float64(0)
+	for _, v := range readerProgress {
+		totalProgress += v
+	}
+
+	progress := 100 * totalProgress / float64(len(readerProgress))
+	if progress > 100 {
+		return 100
+	}
+	if progress < 0 {
+		return 0
+	}
+
+	return progress
+}
+
 func (t *Torrent) piecesProgress(pieces map[int]float64) {
 	if t.Closer.IsSet() || t.th == nil || t.th.Swigcptr() == 0 {
 		return

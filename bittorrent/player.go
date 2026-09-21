@@ -796,6 +796,9 @@ playbackLoop:
 		} else if btp.xbmcHost == nil || btp.xbmcHost.PlayerIsPaused() {
 			if btp.overlayStatusEnabled && btp.p.Playing {
 				progress := btp.t.GetProgress()
+				if btp.t.IsMemoryStorage() {
+					progress = btp.t.GetMemoryStorageProgress()
+				}
 				line1, line2, line3 := btp.statusStrings(progress, btp.t.GetLastStatus(false))
 				btp.overlayStatus.Update(int(progress), line1, line2, line3)
 				if !overlayStatusActive {
